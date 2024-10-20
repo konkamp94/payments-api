@@ -1,6 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CustomRepository } from './shared/repository/custom-repository.interface';
-import { Merchant } from './merchant/entities/merchant.entity';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
