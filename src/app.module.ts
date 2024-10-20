@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MerchantModule } from './merchant/merchant.module';
 import { PspModule } from './psp/psp.module';
 import { provideCustomRepository } from './shared/repository/custom-repository-provider';
+import { PaymentsModule } from './payments/payments.module';
 
 const ENV = process.env.NODE_ENV || 'development';
 const envFilePath = `config/.${ENV}.env`;
@@ -27,7 +28,8 @@ const envFilePath = `config/.${ENV}.env`;
       })
     }),
     MerchantModule,
-    PspModule
+    PspModule,
+    PaymentsModule
   ],
   controllers: [AppController],
   providers: [AppService],
