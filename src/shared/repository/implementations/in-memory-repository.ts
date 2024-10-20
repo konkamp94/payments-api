@@ -2,7 +2,7 @@ import { CustomRepository } from "../custom-repository.interface";
 import { CustomBaseEntity } from "../types/base-entity.type";
 
 export class InMemoryRepository<T extends CustomBaseEntity> implements CustomRepository<T> {
-    private entities: T[] = [];
+    protected entities: T[] = [];
 
     async create(entity: T): Promise<T> {
         this.entities.push(entity);

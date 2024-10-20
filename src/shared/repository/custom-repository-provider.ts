@@ -9,6 +9,7 @@ import { Psp } from "src/psp/models/psp.model";
 import { EntityEnum } from "./types/entity.enum";
 import { Merchant as MerchantEntity } from "src/merchant/entities/merchant.entity";
 import { Psp as PspEntity } from "src/psp/entities/psp.entity";
+import { MerchantTypeOrmRepository } from "src/merchant/repository/implementations/merchant-type-orm-repository";
 
 const mapEntityToTypeOrmModel = (entity: EntityEnum): new () => Merchant | Psp => {
     switch (entity) {
@@ -39,23 +40,33 @@ function createCustomRepositoryDependenciesProvider<T>(
     return DynamicCustomRepositoryDependenciesProvider;
 }
 
-const provideCustomRepositoryFactory = async (configService: ConfigService, dependenciesProvider) => {
+const provideCustomRepositoryFactory = async (configService: ConfigService, dependenciesProvider, entity) => {
     await ConfigModule.envVariablesLoaded;
     switch (configService.get('DATASOURCE_TYPE')) {
         case 'SQL':
-            return new TypeOrmRepository(dependenciesProvider.typeOrmRepository);
+            switch (entity) {
+                case EntityEnum.MERCHANT:
+                    return new MerchantTypeOrmRepository(dependenciesProvider.typeOrmRepository);
+                default:
+                    return new TypeOrmRepository(dependenciesProvider.typeOrmRepository);
+            }
         case 'IN_MEMORY':
-            return new InMemoryRepository<MerchantEntity | PspEntity>();
+            switch (entity) {
+                case EntityEnum.MERCHANT:
+                    return new InMemoryRepository<MerchantEntity>();
+                default:
+                    return new InMemoryRepository();
+            }
     }
 }
 
-export function provideCustomRepository(entity: EntityEnum): Provider[] {
+export function provideCustomRepository(entity: EntityEnum, token: string): Provider[] {
     const dependenciesProvider = createCustomRepositoryDependenciesProvider(mapEntityToTypeOrmModel(entity));
     return [
         {
-            provide: 'CUSTOM_REPOSITORY',
+            provide: token,
             useFactory: async (configService: ConfigService, dependenciesProvider) => {
-                return provideCustomRepositoryFactory(configService, dependenciesProvider);
+                return provideCustomRepositoryFactory(configService, dependenciesProvider, entity);
             },
             inject: [ConfigService, dependenciesProvider],
         },

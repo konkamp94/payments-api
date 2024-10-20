@@ -9,6 +9,6 @@ import { EntityEnum } from 'src/shared/repository/types/entity.enum';
 @Module({
   imports: [TypeOrmModule.forFeature([Merchant])],
   controllers: [MerchantController],
-  providers: [MerchantService, ...provideCustomRepository(EntityEnum.MERCHANT)],
+  providers: [MerchantService, ...provideCustomRepository(EntityEnum.MERCHANT, 'MERCHANT_CUSTOM_REPOSITORY')],
 })
 export class MerchantModule { }

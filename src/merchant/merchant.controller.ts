@@ -4,10 +4,11 @@ import { CreateMerchantDto } from './dto/create-merchant.dto';
 import { UpdateMerchantDto } from './dto/update-merchant.dto';
 import { CustomRepository } from 'src/shared/repository/custom-repository.interface';
 import { Merchant } from './entities/merchant.entity';
+import { MerchantCustomRepository } from './repository/merchant-custom-repository.interface';
 
 @Controller('merchant')
 export class MerchantController {
-  constructor(private readonly merchantService: MerchantService, @Inject('CUSTOM_REPOSITORY') private merchantRepository: CustomRepository<Merchant>) { }
+  constructor(private readonly merchantService: MerchantService, @Inject('MERCHANT_CUSTOM_REPOSITORY') private merchantRepository: MerchantCustomRepository) { }
 
   @Post()
   create(@Body() createMerchantDto: CreateMerchantDto) {
