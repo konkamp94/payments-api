@@ -8,15 +8,17 @@ import { Merchant } from "src/merchant/models/merchant.model";
 import { Psp } from "src/psp/models/psp.model";
 import { EntityEnum } from "./types/entity.enum";
 import { Merchant as MerchantEntity } from "src/merchant/entities/merchant.entity";
-import { Psp as PspEntity } from "src/psp/entities/psp.entity";
 import { MerchantTypeOrmRepository } from "src/merchant/repository/implementations/merchant-type-orm-repository";
+import { MerchantPsp } from "src/merchant/models/merchant-psp.model";
 
-const mapEntityToTypeOrmModel = (entity: EntityEnum): new () => Merchant | Psp => {
+const mapEntityToTypeOrmModel = (entity: EntityEnum): new () => Merchant | Psp | MerchantPsp => {
     switch (entity) {
         case EntityEnum.MERCHANT:
             return Merchant;
         case EntityEnum.PSP:
             return Psp;
+        case EntityEnum.MERCHANT_PSP:
+            return MerchantPsp;
     }
 }
 

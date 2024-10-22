@@ -10,13 +10,25 @@ export class MerchantPsp {
     @Column()
     enabled: boolean;
 
-    @ManyToOne(() => Merchant, (merchant) => merchant.psps)
-    @JoinColumn({ name: 'merchantId' })
-    user: Merchant;
+    @Column()
+    secretKey: string;
 
-    @ManyToOne(() => Psp, (psp) => psp.merchants)
+    @Column()
+    publicKey: string;
+
+    @ManyToOne(() => Merchant, (merchant) => merchant.merchantPsp)
+    @JoinColumn({ name: 'merchantId' })
+    merchant: Merchant;
+
+    @ManyToOne(() => Psp, (psp) => psp.merchantPsp)
     @JoinColumn({ name: 'pspId' })
     psp: Psp;
+
+    @Column()
+    merchantId: number;
+
+    @Column()
+    pspId: number;
 
 
 }

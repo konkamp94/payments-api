@@ -1,5 +1,6 @@
 import { Psp } from "src/psp/models/psp.model";
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { MerchantPsp } from "./merchant-psp.model";
 
 @Entity()
 export class Merchant {
@@ -24,8 +25,8 @@ export class Merchant {
     @Column()
     clientApiKey: string;
 
-    @ManyToMany(() => Psp, psp => psp.merchants)
-    psps: Psp[];
+    @OneToMany(() => MerchantPsp, merchantPsp => merchantPsp.merchant)
+    merchantPsp: MerchantPsp[];
 
     @Column()
     createdAt: Date;

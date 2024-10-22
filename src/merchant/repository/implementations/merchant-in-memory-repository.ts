@@ -11,4 +11,8 @@ export class MerchantInMemoryRepository extends InMemoryRepository<Merchant> imp
     async findByClientId(clientId: string): Promise<Merchant> {
         return this.entities.find(merchant => merchant.clientId === clientId);
     }
+
+    async findEnabledPspByMerchantId(merchantId: number): Promise<any> {
+        new Error('Method not implemented.');
+    }
 }

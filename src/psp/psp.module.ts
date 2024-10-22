@@ -6,4 +6,4 @@ import { PspController } from './psp.controller';
   controllers: [PspController],
   providers: [PspService],
 })
-export class PspModule {}
+export class PspModule { }
