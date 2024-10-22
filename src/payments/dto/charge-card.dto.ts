@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
-import { IsNotEmpty, IsNumber, IsString, ValidateNested } from "class-validator";
+import { IsEmail, isNotEmpty, IsNotEmpty, IsNumber, IsOptional, IsString, Matches, ValidateNested } from "class-validator";
 
-class CardInfo {
+export class BaseCardInfo {
 
     @IsNotEmpty()
     @IsString()
@@ -9,10 +9,7 @@ class CardInfo {
 
     @IsNotEmpty()
     @IsString()
-    cardHolderName: string;
-
-    @IsNotEmpty()
-    @IsString()
+    @Matches(/^(0[1-9]|1[0-2])\/\d{2}$/)
     expirationDate: string;
 
     @IsNotEmpty()
@@ -20,15 +17,82 @@ class CardInfo {
     cvv: string;
 }
 
-export class ChargeCardDto {
+export class StripeCardInfo extends BaseCardInfo { }
+
+export class PinPaymentsCardInfo extends BaseCardInfo {
+
+    @IsNotEmpty()
+    @IsString()
+    @Matches(/^[A-Za-z]+\s[A-Za-z]+$/)
+    cardHolderName: string;
+
+    @IsNotEmpty()
+    @IsString()
+    address: string;
+
+    @IsNotEmpty()
+    @IsString()
+    addressCity: string;
+
+    @IsNotEmpty()
+    @IsString()
+    addressPostcode: string;
+
+    @IsNotEmpty()
+    @IsString()
+    addressState: string;
+
+    @IsNotEmpty()
+    @IsString()
+    addressCountry: string;
+
+}
+
+export class BaseChargeCardDto {
 
     @ValidateNested()
-    @Type(() => CardInfo)
+    @Type(() => BaseCardInfo)
     @IsNotEmpty()
-    cardInfo: CardInfo;
+    cardInfo: BaseCardInfo;
+
+    @IsNotEmpty()
+    @IsNumber()
+    amount: number;
+}
+
+export class StripeChargeCardDto extends BaseChargeCardDto {
+
+    @ValidateNested()
+    @Type(() => StripeCardInfo)
+    @IsNotEmpty()
+    cardInfo: StripeCardInfo;
+
+    @IsNotEmpty()
+    @IsString()
+    currency: string;
+}
+
+export class PinPaymentsChargeCardDto extends BaseChargeCardDto {
+
+    @ValidateNested()
+    @Type(() => PinPaymentsCardInfo)
+    @IsNotEmpty()
+    cardInfo: PinPaymentsCardInfo;
+
+    @IsNotEmpty()
+    @IsEmail()
+    email: string;
+
+    @IsNotEmpty()
+    @IsString()
+    description: string;
 
     @IsNotEmpty()
     @IsNumber()
     amount: number;
 
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    currency: string;
 }
