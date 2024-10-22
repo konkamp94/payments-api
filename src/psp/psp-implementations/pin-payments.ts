@@ -11,8 +11,6 @@ export class PinPaymentsService implements Psp {
     private axiosInstance: Axios
 
     constructor(private configService: ConfigService, private merchantCredentials: MerchantPspCredentials) {
-        console.log(this.configService.get('PIN_PAYMENTS_BASE_URL'))
-        console.log(this.merchantCredentials)
         this.axiosInstance = axios.create({
             baseURL: this.configService.get('PIN_PAYMENTS_BASE_URL'),
             headers: {
@@ -53,7 +51,6 @@ export class PinPaymentsService implements Psp {
             const axiosResponse = await this._chargeCard(chargeCardDto);
             return { type: 'success', pspData: axiosResponse.data, paymentStatus: 'succeeded' }
         } catch (error) {
-            console.log(error.response.data)
             return { type: 'error', message: error.response.data.messages, statusCode: error.response.status }
         }
 
