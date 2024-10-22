@@ -14,7 +14,14 @@ export class ApiKeyGuard implements CanActivate {
             throw new UnauthorizedException('Missing Authorization header');
         }
 
-        const [clientId, clientApiKey] = authHeader.split(':');
+        const [type, credentials] = authHeader.split(' ');
+
+        if (type !== 'Basic' || !credentials) {
+            throw new UnauthorizedException('Invalid Authorization header');
+        }
+
+        const decodedCredentials = Buffer.from(credentials, 'base64').toString('utf-8');
+        const [clientId, clientApiKey] = decodedCredentials.split(':');
 
         if (!clientId || !clientApiKey) {
             throw new UnauthorizedException('Invalid Authorization header');
@@ -31,6 +38,8 @@ export class ApiKeyGuard implements CanActivate {
         if (!isApiKeyValid) {
             throw new UnauthorizedException('Invalid API key');
         }
+
+        request['merchant'] = merchant;
 
         return true;
     }
