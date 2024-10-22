@@ -24,7 +24,6 @@ export class PinPaymentsService implements Psp {
             email: chargeCardDto.email,
             description: chargeCardDto.description,
             amount: chargeCardDto.amount,
-            // ip: "192.168.1.1",
             card: {
                 number: chargeCardDto.cardInfo.cardNumber,
                 expiry_month: chargeCardDto.cardInfo.expirationDate.split('/')[0],
@@ -49,7 +48,11 @@ export class PinPaymentsService implements Psp {
     async paymentWorkflow(chargeCardDto: PinPaymentsChargeCardDto): Promise<PspResponse> {
         try {
             const axiosResponse = await this._chargeCard(chargeCardDto);
-            return { type: 'success', pspData: axiosResponse.data, paymentStatus: 'succeeded' }
+            return {
+                type: 'success',
+                pspData: axiosResponse.data.response,
+                paymentStatus: axiosResponse.data.response.success ? 'succeeded' : 'failed'
+            }
         } catch (error) {
             return { type: 'error', message: error.response.data.messages, statusCode: error.response.status }
         }
