@@ -54,7 +54,7 @@ export class PinPaymentsService implements Psp {
                 paymentStatus: axiosResponse.data.response.success ? 'succeeded' : 'failed'
             }
         } catch (error) {
-            return { type: 'error', message: error.response.data.messages, statusCode: error.response.status }
+            return { type: 'error', message: error.response.data.error_description, statusCode: error.response.status }
         }
 
     }
