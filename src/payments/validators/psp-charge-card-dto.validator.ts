@@ -15,7 +15,6 @@ export const pspChargeCardDtoValidator = async (chargeCardDto: BaseChargeCardDto
     // workaround to validate nested object properties
     Object.assign(cardInfoInstance, chargeCardDto.cardInfo);
     dtoInstance.cardInfo = cardInfoInstance;
-    console.log(dtoInstance);
     const errors = await validate(dtoInstance);
     if (errors.length > 0) {
         const formattedErrors = errors.map(error => {
