@@ -106,4 +106,12 @@ describe('PaymentsController', () => {
     await expect(controller.chargeCard(mockRequest, mockChargeCardDto))
       .rejects.toThrow(new BadRequestException(errorFormat));
   });
+
+  it('should throw internal server error if validator throws an error', async () => {
+    mockPaymentsService.findEnabledPsp.mockResolvedValueOnce(enabledPsp);
+    (pspChargeCardDtoValidator as jest.Mock).mockRejectedValueOnce(new Error());
+
+    await expect(controller.chargeCard(mockRequest, mockChargeCardDto))
+      .rejects.toThrow(new InternalServerErrorException('Something went wrong. Payment failed'));
+  });
 });
