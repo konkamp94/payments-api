@@ -5,7 +5,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MerchantModule } from './merchant/merchant.module';
 import { PspModule } from './psp/psp.module';
-import { provideCustomRepository } from './shared/repository/custom-repository-provider';
 import { PaymentsModule } from './payments/payments.module';
 
 const ENV = process.env.NODE_ENV || 'development';
