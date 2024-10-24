@@ -18,7 +18,6 @@ export class MerchantController {
   @Get()
   findAll() {
     return this.merchantRepository.findAll();
-    return this.merchantService.findAll();
   }
 
   @Get(':id')
