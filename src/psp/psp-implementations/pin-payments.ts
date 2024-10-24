@@ -8,16 +8,8 @@ import { PspResponse } from "./types/psp-response.type";
 
 @Injectable()
 export class PinPaymentsService implements Psp {
-    private axiosInstance: Axios
 
-    constructor(private configService: ConfigService, private merchantCredentials: MerchantPspCredentials) {
-        this.axiosInstance = axios.create({
-            baseURL: this.configService.get('PIN_PAYMENTS_BASE_URL'),
-            headers: {
-                Authorization: `Basic ${Buffer.from(`${this.merchantCredentials.secretKey}:`).toString('base64')}`
-            }
-        })
-    }
+    constructor(private axiosInstance: Axios) { }
 
     private async _chargeCard(chargeCardDto: PinPaymentsChargeCardDto) {
         const chargeInfo = {

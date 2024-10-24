@@ -6,12 +6,14 @@ import { provideCustomRepository } from 'src/shared/repository/custom-repository
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Merchant } from 'src/merchant/models/merchant.model';
 import { MerchantPsp } from 'src/merchant/models/merchant-psp.model';
-import { ConfigModule } from '@nestjs/config';
+import { PspFactory } from 'src/psp/psp-implementations/psp.factory';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Merchant, MerchantPsp])],
   controllers: [PaymentsController],
-  providers: [PaymentsService,
+  providers: [
+    PaymentsService,
+    PspFactory,
     ...provideCustomRepository(EntityEnum.MERCHANT, 'MERCHANT_CUSTOM_REPOSITORY'),
     ...provideCustomRepository(EntityEnum.MERCHANT_PSP, 'CUSTOM_REPOSITORY')
   ],

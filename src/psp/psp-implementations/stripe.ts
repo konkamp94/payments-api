@@ -1,14 +1,10 @@
 import { Psp } from "./psp.interface";
 import Stripe from 'stripe'
-import { MerchantPspCredentials } from "./types/merchant-credentials.type";
 import { StripeChargeCardDto } from "src/payments/dto/charge-card.dto";
 import { PspErrorResponse, PspPaymentResponse, PspResponse } from "./types/psp-response.type";
 
 export class StripeService implements Psp {
-    private stripe: Stripe;
-    constructor(private merchantCredentials: MerchantPspCredentials) {
-        this.stripe = new Stripe(this.merchantCredentials.secretKey);
-    }
+    constructor(private stripe: Stripe) { }
 
     private async _createPaymentMethod(cardInfo: any) {
         return this.stripe.paymentMethods.create({
